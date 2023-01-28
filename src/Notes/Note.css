@@ -1,0 +1,50 @@
+.noteContainer {
+  position: relative;
+}
+
+.note {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #333;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.note h2 {
+  margin: 10px 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.buttons button {
+  padding: 5px 20px;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.changeForm {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #FFF;
+  z-index: 2;
+}
+
+.changeForm button {
+  margin-bottom: 10px;
+}
+
+.show {
+  display: block;
+}
