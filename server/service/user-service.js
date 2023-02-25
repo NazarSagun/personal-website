@@ -7,7 +7,7 @@ const ApiError = require("../exeptions/api-error");
 const tokenService = require("./token-service");
 
 class UserService {
-  async registration(email, password) {
+  async registration(email, password, role) {
     const candidate = await UserModel.findOne({ email });
 
     if (candidate) {
@@ -20,6 +20,7 @@ class UserService {
       email,
       password: hashPassword,
       activationLink,
+      role
     });
     await MailService.sendActivationMail(
       email,
@@ -29,6 +30,7 @@ class UserService {
       id: user._id,
       email: user.email,
       isActivated: user.isActivated,
+      role: user.role
     };
 
     const tokens = TokenService.generateTokens(userDto);

@@ -11,15 +11,21 @@ import CreateNote from "./Notes/CreateNote";
 import { checkAuth } from "./redux/features/auth/authSlice";
 import Header from "./components/Header/Header";
 import AuthForm from "./components/AuthForm";
-import HomePage from "./components/HomePage";
+import HomePage from "./pages/HomePage";
 import ProtectedRouteNotes from "./utils/ProtectedRouteNotes";
-import PageNotFound from "./utils/PageNotFound";
+import PageNotFound from "./components/NotFound/PageNotFound";
 import ProtectedRouteAuth from "./utils/ProtectedRouteAuth";
+import ShopPage from "./pages/ShopPage";
+import Product from "./components/Shop/Product/Product";
+import Products from "./components/Shop/Products";
+import Cart from "./components/Shop/Cart/Cart";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    
     if (localStorage.getItem("token")) {
       dispatch(checkAuth());
     }
@@ -30,18 +36,27 @@ function App() {
   return (
     <div className="App">
       <Header />
+      <main className="main">
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={
-          <ProtectedRouteAuth><AuthForm form="login" /></ProtectedRouteAuth>} />
-        <Route path="/register" element={
-          <ProtectedRouteAuth><AuthForm form="register"/></ProtectedRouteAuth>} />
-        <Route path="/notes" element={
+
+        <Route path="shop" element={<ShopPage />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="shop/:id" element={<Product />} />
+        <Route path="login" element={
+          <ProtectedRouteAuth>
+            <AuthForm />
+          </ProtectedRouteAuth>} />
+        <Route path="register" element={
+          <ProtectedRouteAuth><AuthForm /></ProtectedRouteAuth>} />
+        <Route path="notes" element={
           <ProtectedRouteNotes><Notes /></ProtectedRouteNotes>} />
-        <Route path="/create" element={
+        <Route path="create" element={
           <ProtectedRouteNotes><CreateNote /></ProtectedRouteNotes>} />
-        <Route path="/*" element={<PageNotFound />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
+      </main>
+      <Footer />
     </div>
   );
 }

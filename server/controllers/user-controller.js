@@ -1,12 +1,11 @@
 const { validationResult } = require("express-validator");
 const ApiError = require("../exeptions/api-error");
 const userService = require("../service/user-service");
-const UserService = require("../service/user-service");
 
 class UserController {
   async getUsers(req, res, next) {
     try {
-      const users = await UserService.getUsers();
+      const users = await userService.getUsers();
       return res.json(users);
     } catch (error) {
       next(error);
@@ -19,8 +18,8 @@ class UserController {
       if (!errors.isEmpty()) {
         return next(ApiError.BadRequest("Validation error", errors.array()));
       }
-      const { email, password } = req.body;
-      const userData = await UserService.registration(email, password);
+      const { email, password, role } = req.body;
+      const userData = await userService.registration(email, password, role);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -75,7 +74,7 @@ class UserController {
   async activate(req, res, next) {
     try {
       const activationLink = req.params.link;
-      await UserService.activate(activationLink);
+      await userService.activate(activationLink);
       return res.redirect(process.env.CLIENT_URL);
     } catch (error) {
       next(error);
