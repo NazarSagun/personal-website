@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useAppSelector } from "../redux/app/hooks";
 import { useNavigate } from "react-router-dom";
 
-const ProtectedRouteNotes = ({ children }) => {
+const ProtectedRouteNotes: FC<any> = ({ children }) => {
   const { isAuth } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 

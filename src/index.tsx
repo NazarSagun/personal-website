@@ -1,15 +1,17 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import React from "react";
 
 import { Provider } from "react-redux";
-import { store } from "./redux/app/store";
+import { setupStore } from "./redux/app/store";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 
+const store = setupStore();
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 

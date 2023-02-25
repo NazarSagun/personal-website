@@ -6,7 +6,7 @@ export interface AuthResponse {
   user: IUser;
 }
 
-export interface AuthError {
+export interface ResponseError {
   errors: string[] | [];
   message: string;
   status: number;

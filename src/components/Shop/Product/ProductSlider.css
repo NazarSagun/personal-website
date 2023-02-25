@@ -1,0 +1,38 @@
+.slider-img {
+  width: 18%;
+
+}
+
+.show {
+  opacity: 1;
+  transition: opacity 0.2s linaer;
+  animation: fadeIn 0.5s;
+}
+.hide {
+  opacity: 0;
+  animation: fadeOut 0.5s;
+}
+
+
+.slider-container img {
+  position: absolute;
+  top: 0;
+  left: 25%;
+  width: 60%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-sm-size {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}

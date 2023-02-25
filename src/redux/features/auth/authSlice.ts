@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IUser } from "../../../http/IUser";
+import { IUser } from "../../../http/models/IUser";
 import AuthService from "../../../services/AuthService";
 import { API_URL } from "../../../http";
-import { AuthResponse } from "../../../http/auth-response";
+import {
+  AuthResponse,
+  ResponseError,
+} from "../../../http/models/auth-response";
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -17,10 +20,9 @@ export const login = createAsyncThunk(
         userData.password
       );
 
-      if(response.data.status === 400) {
+      if (response.data.status === 400) {
         return rejectWithValue(response.data.message);
       }
-      console.log(response);
       localStorage.setItem("token", response.data.accessToken);
       return response.data;
     } catch (err: any) {
@@ -34,39 +36,44 @@ export const login = createAsyncThunk(
 
 export const registration = createAsyncThunk(
   "auth/registration",
-  async (userData: { email: string; password: string }, {rejectWithValue}) => {
+  async (
+    userData: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await AuthService.registration(
         userData.email,
         userData.password
       );
-      if(response.data.status === 400) {
+      if (response.data.status === 400) {
+        console.log(response);
         return rejectWithValue(response.data.message);
-        
       }
-      console.log(response);
       localStorage.setItem("token", response.data.accessToken);
       return response.data;
-    } catch(error) {
+    } catch (error) {
       return rejectWithValue("Unexpected Error");
     }
   }
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  const response = await AuthService.logout();
+  await AuthService.logout();
   localStorage.removeItem("token");
   return "logged out";
 });
 
-export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
+export const checkAuth = createAsyncThunk("auth/checkAuth", async (id,{ rejectWithValue }) => {
   try {
-    const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {
+    const response = await axios.get(`${API_URL}/refresh`, {
       withCredentials: true,
     });
+    // console.log(response)
+    if (response.data.status === 401) {
+      return rejectWithValue( response.data.message);
+    }
     const data = response.data;
     localStorage.setItem("token", data.accessToken);
-
     return data.user;
   } catch (e: any) {
     console.log(e.response.data.message);
@@ -76,7 +83,7 @@ export const checkAuth = createAsyncThunk("auth/checkAuth", async () => {
 const initialState = {
   user: {} as IUser,
   isAuth: false,
-  status: "",
+  status: "idle",
   message: "",
 };
 
@@ -86,12 +93,12 @@ export const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state, action) => {
-      state.status = "pending";
+      state.status = "loading";
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.user = action.payload.user;
       state.isAuth = true;
-      state.status = "idle";
+      state.status = "completed";
     });
     builder.addCase(login.rejected, (state, action: any) => {
       state.isAuth = false;
@@ -103,37 +110,32 @@ export const authSlice = createSlice({
       (state, action: PayloadAction<AuthResponse>) => {
         state.user = action.payload.user;
         state.isAuth = true;
-        state.status = "idle";
-
+        state.status = "completed";
       }
     );
-    builder.addCase(
-      registration.pending,
-      (state, action) => { 
-        state.status = "pending";
-      }
-    );
-    builder.addCase(
-      registration.rejected,
-      (state, action: any) => {
-        state.status = "rejected";
-        state.message = action.payload;
-      }
-    );
+    builder.addCase(registration.pending, (state, action) => {
+      state.status = "loading";
+    });
+    builder.addCase(registration.rejected, (state, action: any) => {
+      state.status = "rejected";
+      state.message = action.payload;
+    });
     builder.addCase(logout.fulfilled, (state) => {
       state.user = {} as IUser;
       state.isAuth = false;
     });
     builder.addCase(checkAuth.fulfilled, (state, action: any) => {
-      state.status = "idle";
+      state.status = "completed";
       state.isAuth = true;
       state.user = action.payload;
     });
     builder.addCase(checkAuth.pending, (state, action: any) => {
-      state.status = "pending";
+      state.status = "loading";
     });
     builder.addCase(checkAuth.rejected, (state, action: any) => {
       state.isAuth = false;
+      state.message = action.payload;
+      state.status = "rejected";
     });
   },
 });
