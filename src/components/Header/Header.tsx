@@ -15,7 +15,11 @@ const Header = () => {
     return currentNumber + product.productAmount;
   }, 0);
 
-  const initialStatus = "idle" || "completed";
+  const statusCondition =
+    (!isAuth && status === "idle") || (!isAuth && status === "completed");
+
+  const loginStatusCondition =
+    (!isAuth && status === "loading") || (isAuth && status === "loading");
 
   return (
     <nav className="navbar navbar-light bg-dark">
@@ -24,7 +28,7 @@ const Header = () => {
           Home
         </NavLink>
         <ul className="d-flex align-items-center navbar-nav flex-row">
-          {!isAuth && status === initialStatus && (
+          {statusCondition && (
             <>
               <li className="nav-item">
                 <NavLink className="nav-link me-5 text-white" to="/shop">
@@ -37,7 +41,7 @@ const Header = () => {
                   className="nav-link me-2 text-white"
                   to="/login"
                 >
-                  Login
+                  LogIn
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -49,8 +53,8 @@ const Header = () => {
           )}
           {isAuth && status === "completed" && (
             <>
-              <li className="nav-item me-4">
-                <NavLink className="nav-link text-white" to="/shop">
+              <li className="nav-item">
+                <NavLink className="nav-link me-5 text-white" to="/shop">
                   Shop
                 </NavLink>
               </li>
@@ -71,6 +75,7 @@ const Header = () => {
                   to="/"
                 >
                   <button
+                    data-testid="logoutBtn"
                     type="button"
                     className="btn btn-outline-secondary text-white"
                   >
@@ -78,15 +83,15 @@ const Header = () => {
                   </button>
                 </NavLink>
               </li>
-              <li className="nav-item ms-5">
+              <li data-testid="cartBtn" className="nav-item ms-5">
                 <NavLink className="nav-link text-white" to="/cart">
                   <TiShoppingCart size="1.4em" />
-                  <span className="ms-1">{currentAmountOfProducts}</span>
+                  <span data-testid="cartItemsAmount" className="ms-1">{currentAmountOfProducts}</span>
                 </NavLink>
               </li>
             </>
           )}
-          {status === "loading" && isAuth === false && <Spinner />}
+          {loginStatusCondition && <Spinner />}
         </ul>
       </div>
     </nav>

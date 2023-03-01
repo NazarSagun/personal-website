@@ -12,7 +12,7 @@ const Cart = () => {
         <h5 className="fw-bold">Total Price:</h5>
         <div className="d-flex">
           <span className="fs-2 fw-bold">{cartTotalAmount}$</span>
-          <button className="btn btn-dark py-0 fs-5 font-monospace rounded-3 ms-5">
+          <button disabled={cartItems.length === 0} className="btn btn-dark py-0 fs-5 font-monospace rounded-3 ms-5">
             Make an Order <TiShoppingCart />
           </button>
         </div>

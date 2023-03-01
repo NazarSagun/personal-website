@@ -93,9 +93,9 @@ export const shopSlice = createSlice({
         state.cartItems.push(addedProduct);
       }
     },
-    removeProduct(state, action) {
+    decreaseProductAmount(state, action) {
       const removedProduct = action.payload;
-      console.log("removed", action.payload);
+
       const existingCartItemIndex = state.cartItems.findIndex(
         (product) =>
           product.id === removedProduct.id &&
@@ -106,15 +106,12 @@ export const shopSlice = createSlice({
       state.cartTotalAmount = state.cartTotalAmount - existingCartItem.price;
 
       if (existingCartItem.productAmount === 1) {
-        state.cartItems = state.cartItems.filter(
-          (product) => {
-            const productUniqueId = product.id + product.size;
-            const payloadUniqueId = removedProduct.id + removedProduct.size;
-            
-            return productUniqueId !== payloadUniqueId
-            
-          }
-        );
+        state.cartItems = state.cartItems.filter((product) => {
+          const productUniqueId = product.id + product.size;
+          const payloadUniqueId = removedProduct.id + removedProduct.size;
+
+          return productUniqueId !== payloadUniqueId;
+        });
       } else {
         const updatedProduct = {
           ...existingCartItem,
@@ -122,6 +119,27 @@ export const shopSlice = createSlice({
         };
         state.cartItems[existingCartItemIndex] = updatedProduct;
       }
+    },
+    removeProduct(state, action) {
+      const removedProduct = action.payload;
+
+      const existingCartItemIndex = state.cartItems.findIndex(
+        (product) =>
+          product.id === removedProduct.id &&
+          product.size === removedProduct.size
+      );
+
+      let existingCartItem = state.cartItems[existingCartItemIndex];
+      state.cartTotalAmount =
+        state.cartTotalAmount -
+        existingCartItem.price * existingCartItem.productAmount;
+
+      state.cartItems = state.cartItems.filter((product) => {
+        const productUniqueId = product.id + product.size;
+        const payloadUniqueId = removedProduct.id + removedProduct.size;
+
+        return productUniqueId !== payloadUniqueId;
+      });
     },
   },
   extraReducers: (builder) => {
@@ -195,5 +213,5 @@ export const shopSlice = createSlice({
   },
 });
 
-export const { addProductToCart, removeProduct } = shopSlice.actions;
+export const { addProductToCart, decreaseProductAmount, removeProduct } = shopSlice.actions;
 export default shopSlice.reducer;

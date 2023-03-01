@@ -9,11 +9,12 @@ import ProductInfo from "./ProductInfo";
 import ProductSlider from "./ProductSlider";
 
 const Product: FC = () => {
-const [productAmount, setProductAmount] = useState(1);
-const [size, setSize] = useState("");
+  const [productAmount, setProductAmount] = useState(1);
+  const [size, setSize] = useState("");
 
   const dispatch = useAppDispatch();
   const { product, productStatus } = useAppSelector((state) => state.shop);
+  const { isAuth } = useAppSelector((state) => state.auth);
   const { name, amount, description, sizes, price, type, details, id, images } =
     product;
   const params = useParams();
@@ -24,28 +25,30 @@ const [size, setSize] = useState("");
   }, [dispatch, params.id]);
 
   const increaseHandler = () => {
-    if(productAmount === amount) {
-      return
+    if (productAmount === amount) {
+      return;
     }
-    setProductAmount(prevState => prevState + 1)
-  }
+    setProductAmount((prevState) => prevState + 1);
+  };
 
   const decreaseHandler = () => {
-    if(productAmount <= 0) {
-      return
+    if (productAmount <= 0) {
+      return;
     }
-    setProductAmount(prevState => prevState - 1)
-  }
+    setProductAmount((prevState) => prevState - 1);
+  };
 
   const changeSizeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSize(e.target.value);
-  }
+  };
 
   return (
     <div className="container-sm mt-3 px-0">
       <div className="row row-cols-2 mb-3">
         {productStatus === "loading" && <Spinner />}
-        {productStatus === "completed" && <ProductSlider images={product.images} />}
+        {productStatus === "completed" && (
+          <ProductSlider images={product.images} />
+        )}
         {productStatus === "completed" && (
           <ProductInfo
             name={name}
@@ -62,6 +65,7 @@ const [size, setSize] = useState("");
             decreaseItem={decreaseHandler}
             onChangeSize={changeSizeHandler}
             size={size}
+            isAuth={isAuth}
           />
         )}
       </div>
