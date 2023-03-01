@@ -17,7 +17,7 @@ const ProductItem: FC<productProps> = ({ name, price, image, id }) => {
     <>
       <Link className="text-decoration-none w-25" to={`/shop/${id}`}>
         <div
-          className="card border border-0 mb-3 mx-2 overflow-hidden"
+          className="card border border-0 mb-3 mx-2 overflow-hidden bg-transparent"
           
         >
           <div className="rounded overflow-hidden"><img src={url + image.img} className="card-img-top" alt={name} /></div>
