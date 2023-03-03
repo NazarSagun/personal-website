@@ -16,7 +16,7 @@ const Header = () => {
   }, 0);
 
   const statusCondition =
-    (!isAuth && status === "idle") || (!isAuth && status === "completed");
+    (!isAuth && status === "idle") || (!isAuth && status === "completed") || (!isAuth && status === "rejected");
 
   const loginStatusCondition =
     (!isAuth && status === "loading") || (isAuth && status === "loading");
