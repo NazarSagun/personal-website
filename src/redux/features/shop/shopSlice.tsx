@@ -8,7 +8,7 @@ import { IType } from "../../../http/models/IType";
 export const getTypes = createAsyncThunk("shop/getTypes", async () => {
   try {
     const response = await ShopService.getTypes();
-
+    console.log(response.data);
     return response.data;
   } catch (e) {
     throw new Error("something went wrong");
@@ -34,7 +34,7 @@ export const getTypedProducts = createAsyncThunk(
 export const getProducts = createAsyncThunk("shop/getProducts", async () => {
   try {
     const response = await ShopService.getProducts();
-    // console.log(response);
+    
     return response.data;
   } catch (e) {
     throw new Error("something went wrong");
