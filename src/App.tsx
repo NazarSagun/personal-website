@@ -10,14 +10,14 @@ import Notes from "./Notes/Notes";
 import CreateNote from "./Notes/CreateNote";
 import { checkAuth } from "./redux/features/auth/authSlice";
 import Header from "./components/Header/Header";
-import AuthForm from "./components/AuthForm";
+import LoginForm from "./components/AuthForm/LoginForm";
+import SignUpForm from "./components/AuthForm/SignUpForm";
 import HomePage from "./pages/HomePage";
 import ProtectedRouteNotes from "./utils/ProtectedRouteNotes";
 import PageNotFound from "./components/NotFound/PageNotFound";
 import ProtectedRouteAuth from "./utils/ProtectedRouteAuth";
 import ShopPage from "./pages/ShopPage";
 import Product from "./components/Shop/Product/Product";
-import Products from "./components/Shop/Products";
 import Cart from "./components/Shop/Cart/Cart";
 import Footer from "./components/Footer/Footer";
 
@@ -45,10 +45,10 @@ function App() {
         <Route path="shop/:id" element={<Product />} />
         <Route path="login" element={
           <ProtectedRouteAuth>
-            <AuthForm />
+            <LoginForm />
           </ProtectedRouteAuth>} />
         <Route path="register" element={
-          <ProtectedRouteAuth><AuthForm /></ProtectedRouteAuth>} />
+          <ProtectedRouteAuth><SignUpForm /></ProtectedRouteAuth>} />
         <Route path="notes" element={
           <ProtectedRouteNotes><Notes /></ProtectedRouteNotes>} />
         <Route path="create" element={

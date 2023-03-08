@@ -2,21 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { renderWithProviders } from "../../../utils/test-utils";
 
 import Header from "../Header";
-
-function setAuthState(isAuth: boolean, status: string) {
-  return {
-    auth: {
-      user: {
-        id: "",
-        email: "",
-        isActivated: false,
-      },
-      isAuth: isAuth,
-      status: status,
-      message: "",
-    },
-  };
-}
+import { setAuthState } from "../../../utils/setAuth";
 
 describe("check the Header component", () => {
   // shop: {
