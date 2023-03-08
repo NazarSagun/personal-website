@@ -41,6 +41,7 @@ const ProductCategories = () => {
             ))}
           {typeStatus === "loading" && <Spinner />}
         </ul>
+        <div>qwe</div>
       </div>
     </nav>
   );

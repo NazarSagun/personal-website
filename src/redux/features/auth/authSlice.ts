@@ -45,8 +45,9 @@ export const registration = createAsyncThunk(
         userData.email,
         userData.password
       );
+      console.log(response.data)
       if (response.data.status === 400) {
-        console.log(response);
+        console.log(response.data);
         return rejectWithValue(response.data.message);
       }
       localStorage.setItem("token", response.data.accessToken);
@@ -123,6 +124,7 @@ export const authSlice = createSlice({
     builder.addCase(logout.fulfilled, (state) => {
       state.user = {} as IUser;
       state.isAuth = false;
+      state.status = "idle";
     });
     builder.addCase(checkAuth.fulfilled, (state, action: any) => {
       state.status = "completed";

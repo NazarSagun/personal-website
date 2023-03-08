@@ -3,15 +3,14 @@ import { useAppSelector } from "../redux/app/hooks";
 import { useNavigate } from "react-router-dom";
 
 const ProtectedRouteAuth: FC<any> = ({ children }) => {
-  const { isAuth } = useAppSelector((state) => state.auth);
+  const { isAuth, status } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isAuth) {
-      console.log(isAuth)
-      navigate("/notes");
+      // navigate("/notes");
     }
-  }, [isAuth, navigate]);
+  }, [isAuth, navigate, status]);
 
   
   return children;

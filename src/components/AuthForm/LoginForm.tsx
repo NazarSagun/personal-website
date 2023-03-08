@@ -24,7 +24,7 @@ const AuthForm: FC = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { status, message } = useAppSelector((status) => status.auth);
+  const { status, message, user } = useAppSelector((status) => status.auth);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const AuthForm: FC = () => {
     }
     dispatch(registration({ email, password }));
     if (status === "completed") {
-      navigate("/");
+      // navigate("/");
       setEmail("");
       setPassword("");
     }
@@ -74,6 +74,7 @@ const AuthForm: FC = () => {
         {status === "rejected" && (
           <div className="alert alert-danger mt-2 p-2">{message}</div>
         )}
+        {user && <div>{user.email}</div>}
     </form>
   );
 };
